@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 
 pub use crate::ec::EcWebKey;
 pub use crate::rsa::RsaWebKey;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(tag = "alg")]
 pub enum JsonWebKey {
     ES256(EcWebKey),
@@ -15,4 +16,9 @@ pub enum JsonWebKey {
     PS256(RsaWebKey),
     PS384(RsaWebKey),
     PS512(RsaWebKey),
+}
+
+#[derive(Debug, Deserialize, Serialize, PartialEq)]
+pub struct JsonWebKeySet {
+    pub jwks: HashSet<JsonWebKey>,
 }

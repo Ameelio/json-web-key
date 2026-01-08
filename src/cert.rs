@@ -34,3 +34,14 @@ pub struct Certificate {
     #[serde(default, rename = "x5u", skip_serializing_if = "Option::is_none")]
     pub url: Option<Box<str>>,
 }
+
+impl Default for Certificate {
+    fn default() -> Self {
+        Self {
+            chain: None,
+            sha256_thumbprint: None,
+            thumbprint: None,
+            url: None,
+        }
+    }
+}

@@ -7,7 +7,11 @@ pub mod rsa;
 pub type Result<T> = std::result::Result<T, error::Error>;
 
 pub mod prelude {
-    pub use crate::{cert::Certificate, ec::EcWebKey, jwk::JsonWebKey, rsa::RsaWebKey};
+    pub use crate::cert::Certificate;
+    pub use crate::ec::EcWebKey;
+    pub use crate::jwk::JsonWebKey;
+    pub use crate::jwk::JsonWebKeySet;
+    pub use crate::rsa::RsaWebKey;
 }
 
 mod encoded_bytes_field;
