@@ -3,7 +3,7 @@ use std::hash;
 
 use crate::{cert::Certificate, encoded_bytes_field::EncodedBytesField};
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct EcWebKey {
     #[serde(flatten)]
     pub cert: Certificate,
