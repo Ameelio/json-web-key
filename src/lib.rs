@@ -38,7 +38,7 @@ mod tests {
     #[test]
     fn test_rsa_jwk() {
         let webkey = json!({
-            "alg": "RSA256",
+            "alg": "RS256",
             "e": "MzYzNTM1MzMzNzBhCg",
             "kid": "test",
             "key_ops": [],
@@ -56,7 +56,7 @@ mod tests {
 
         let jwk: JsonWebKey = from_str(wk_string.as_str()).unwrap();
 
-        let JsonWebKey::RSA256(key) = &jwk else {
+        let JsonWebKey::RS256(key) = &jwk else {
             panic!("Incorrect algorithm.")
         };
 
