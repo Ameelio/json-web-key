@@ -20,5 +20,5 @@ pub enum JsonWebKey {
 
 #[derive(Debug, Deserialize, Serialize, PartialEq)]
 pub struct JsonWebKeySet {
-    pub jwks: HashSet<JsonWebKey>,
+    pub keys: HashSet<JsonWebKey>,
 }
