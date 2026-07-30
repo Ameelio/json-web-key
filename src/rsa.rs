@@ -11,7 +11,7 @@ pub struct RsaWebKey {
     pub key_id: Box<str>,
     #[serde(default)]
     pub key_ops: Box<[Box<str>]>,
-    #[serde(default)]
+    #[serde(default, flatten)]
     pub key_type: KeyType,
     #[serde(rename = "use", default)]
     pub use_case: Box<str>,
