@@ -21,9 +21,10 @@ pub struct RsaWebKey {
     pub modulus: Box<[u8]>,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(tag = "kty")]
 pub enum KeyType {
+    #[default]
     RSA,
 }
 
@@ -55,11 +56,5 @@ impl Hash for RsaWebKey {
 impl PartialEq for RsaWebKey {
     fn eq(&self, other: &Self) -> bool {
         self.key_id.eq(&other.key_id)
-    }
-}
-
-impl Default for KeyType {
-    fn default() -> Self {
-        Self::RSA
     }
 }

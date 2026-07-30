@@ -16,8 +16,8 @@ pub mod prelude {
 
 mod encoded_bytes_field;
 
-pub fn from_str<'a>(s: &'a str) -> Result<jwk::JsonWebKey> {
-    let value: jwk::JsonWebKey = serde_json::from_str(&s)?;
+pub fn from_str(s: &str) -> Result<jwk::JsonWebKey> {
+    let value: jwk::JsonWebKey = serde_json::from_str(s)?;
 
     Ok(value)
 }

@@ -6,9 +6,9 @@ mod chain_field;
 mod encoded_item;
 mod encoded_list;
 
-use chain_field::ChainField;
+use chain_field::{BoxedChain, ChainField};
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct Certificate {
     #[serde(
         default,
@@ -16,7 +16,7 @@ pub struct Certificate {
         skip_serializing_if = "Option::is_none",
         with = "ChainField"
     )]
-    pub chain: Option<Box<[Box<[u8]>]>>,
+    pub chain: Option<BoxedChain>,
     #[serde(
         default,
         rename = "x5t#S256",
@@ -33,15 +33,4 @@ pub struct Certificate {
     pub thumbprint: Option<Box<[u8]>>,
     #[serde(default, rename = "x5u", skip_serializing_if = "Option::is_none")]
     pub url: Option<Box<str>>,
-}
-
-impl Default for Certificate {
-    fn default() -> Self {
-        Self {
-            chain: None,
-            sha256_thumbprint: None,
-            thumbprint: None,
-            url: None,
-        }
-    }
 }
