@@ -2,7 +2,10 @@ use base64ct::{Base64UrlUnpadded, Encoding};
 use serde::{de, ser};
 use std::fmt;
 
+/// Serializes and Deserializes a base64 encoded string into a binary array.`.
 pub struct EncodedBytesField;
+
+/// Serializes and Deserializes a base64 encoded string into an optional binary array`.
 pub struct EncodedOptionalBytesField;
 
 impl EncodedBytesField {
