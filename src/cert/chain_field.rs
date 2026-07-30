@@ -4,10 +4,12 @@ use std::fmt;
 
 use super::encoded_list::EncodedList;
 
+pub type BoxedChain = Box<[Box<[u8]>]>;
+
 pub struct ChainField;
 
 impl ChainField {
-    pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<Box<[Box<[u8]>]>>, D::Error>
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<BoxedChain>, D::Error>
     where
         D: de::Deserializer<'de>,
     {
@@ -54,7 +56,7 @@ impl<'de> de::Visitor<'de> for Visitor {
     where
         D: de::Deserializer<'de>,
     {
-        Ok(deserializer.deserialize_str(Self)?)
+        deserializer.deserialize_str(Self)
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>

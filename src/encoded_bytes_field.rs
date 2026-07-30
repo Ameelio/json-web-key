@@ -19,7 +19,7 @@ impl EncodedBytesField {
     where
         S: ser::Serializer,
     {
-        let encoded_str: String = Base64UrlUnpadded::encode_string(&value);
+        let encoded_str: String = Base64UrlUnpadded::encode_string(value);
 
         serializer.serialize_str(&encoded_str)
     }
@@ -39,7 +39,7 @@ impl EncodedOptionalBytesField {
     {
         match value {
             Some(x) => {
-                let encoded_str: String = Base64UrlUnpadded::encode_string(&x);
+                let encoded_str: String = Base64UrlUnpadded::encode_string(x);
                 serializer.serialize_some(&encoded_str)
             }
             None => serializer.serialize_none(),
@@ -67,7 +67,7 @@ impl<'de> de::Visitor<'de> for Visitor {
     where
         D: de::Deserializer<'de>,
     {
-        Ok(deserializer.deserialize_str(Self)?)
+        deserializer.deserialize_str(Self)
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
