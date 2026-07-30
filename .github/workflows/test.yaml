@@ -11,7 +11,7 @@ on:
       - "release/**"
 
 jobs:
-  clippy:
+  test:
     name: Run Unit Tests
     runs-on: ubuntu-latest
     steps:
