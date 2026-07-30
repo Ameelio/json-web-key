@@ -1,7 +1,12 @@
 [package]
-name = "json_web_key"
-version = "0.1.0"
+name = "json-web-key"
+description = "A ser(de) for JWKS, and the basic structs for representing them."
 edition = "2024"
+homepage = "https://github.com/Ameelio/json-web-key/"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Ameelio/json-web-key/"
+version = "0.1.0"
 
 [dependencies]
 
