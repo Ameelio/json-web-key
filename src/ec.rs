@@ -1,19 +1,22 @@
 use serde::{Deserialize, Serialize};
 use std::hash;
 
-use crate::{cert::Certificate, encoded_bytes_field::EncodedBytesField};
+use crate::cert::Certificate;
+use crate::encoded_bytes_field::EncodedBytesField;
+use crate::key_operation::KeyOperation;
+use crate::use_case::UseCase;
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct EcWebKey {
-    #[serde(flatten)]
+    #[serde(flatten, default)]
     pub cert: Certificate,
     #[serde(rename = "kid")]
     pub key_id: Box<str>,
-    pub key_ops: Box<[Box<str>]>,
+    pub key_ops: Box<[KeyOperation]>,
     #[serde(default, flatten)]
     pub key_type: KeyType,
-    #[serde(rename = "use")]
-    pub use_case: Box<str>,
+    #[serde(rename = "use", default)]
+    pub use_case: UseCase,
     #[serde(rename = "crv")]
     pub curve: Box<str>,
     #[serde(with = "EncodedBytesField")]
@@ -29,20 +32,6 @@ pub enum KeyType {
     EC,
 }
 
-impl Default for EcWebKey {
-    fn default() -> Self {
-        Self {
-            cert: Certificate::default(),
-            curve: "".into(),
-            key_id: "".into(),
-            key_ops: [].into(),
-            key_type: KeyType::default(),
-            x: [].into(),
-            y: [].into(),
-            use_case: "".into(),
-        }
-    }
-}
 // Derive equality based off key_id, not accurate but --
 // just like database records, we can save a lot of
 // performance by just assuming the key_id is accurate.

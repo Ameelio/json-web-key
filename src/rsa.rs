@@ -1,22 +1,32 @@
 use serde::{Deserialize, Serialize};
 use std::hash::Hash;
 
-use crate::{cert::Certificate, encoded_bytes_field::EncodedBytesField};
+use crate::cert::Certificate;
+use crate::encoded_bytes_field::EncodedBytesField;
+use crate::key_operation::KeyOperation;
+use crate::use_case::UseCase;
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct RsaWebKey {
-    #[serde(flatten)]
+    /// The X.509 Certificate
+    #[serde(default, flatten)]
     pub cert: Certificate,
     #[serde(rename = "kid")]
     pub key_id: Box<str>,
+    /// Valid operations the key can perform.
     #[serde(default)]
-    pub key_ops: Box<[Box<str>]>,
+    pub key_ops: Box<[KeyOperation]>,
     #[serde(default, flatten)]
     pub key_type: KeyType,
+    /// Public Key Use Case (signature or encryption)
     #[serde(rename = "use", default)]
-    pub use_case: Box<str>,
+    pub use_case: UseCase,
+    /// A public exponent (Usually 65537) used for
+    /// encryption and signature verification.
     #[serde(rename = "e", with = "EncodedBytesField")]
     pub exponent: Box<[u8]>,
+    /// The product of two large prime numbers, forms the main
+    /// body of the public key.
     #[serde(rename = "n", with = "EncodedBytesField")]
     pub modulus: Box<[u8]>,
 }
@@ -26,20 +36,6 @@ pub struct RsaWebKey {
 pub enum KeyType {
     #[default]
     RSA,
-}
-
-impl Default for RsaWebKey {
-    fn default() -> Self {
-        Self {
-            cert: Certificate::default(),
-            key_id: "".into(),
-            key_ops: [].into(),
-            key_type: KeyType::default(),
-            exponent: [].into(),
-            modulus: [].into(),
-            use_case: "".into(),
-        }
-    }
 }
 
 // Derive equality based off key_id, not accurate but --

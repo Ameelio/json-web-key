@@ -1,8 +1,26 @@
+//! Parse and convert JSON Web Keys
+//!
+//! It uses [serde](https://serde.rs), and provides a basic
+//! struct layout to work with JSON Web Keys.
+//! See: [RFC7517](https://datatracker.ietf.org/doc/html/rfc7517)
+//!
+//! ## Serializing
+//! `let jwk_str: String = json_web_key::to_string(&jwk)`
+//!
+//! ## Deserializing
+//! `let jwk : JsonWebKey = json_web_key::from_str(&jwk_str)`
+//!
+//! ## Serde support
+//! You can use [JsonWebKey] and [JsonWebKeySet] with any code that already
+//! uses serde (for example: axum form and query deserializers).
+
 pub mod cert;
 pub mod ec;
 pub mod error;
 pub mod jwk;
+pub mod key_operation;
 pub mod rsa;
+pub mod use_case;
 
 pub type Result<T> = std::result::Result<T, error::Error>;
 
@@ -11,17 +29,21 @@ pub mod prelude {
     pub use crate::ec::EcWebKey;
     pub use crate::jwk::JsonWebKey;
     pub use crate::jwk::JsonWebKeySet;
+    pub use crate::key_operation::KeyOperation;
     pub use crate::rsa::RsaWebKey;
+    pub use crate::use_case::UseCase;
 }
 
 mod encoded_bytes_field;
 
+/// Deserializes a string into a Json Web Key.
 pub fn from_str(s: &str) -> Result<jwk::JsonWebKey> {
     let value: jwk::JsonWebKey = serde_json::from_str(s)?;
 
     Ok(value)
 }
 
+/// Serializes a JSON Web Key into a JSON string.
 pub fn to_string(value: &jwk::JsonWebKey) -> Result<String> {
     let value = serde_json::to_string(value)?;
 
@@ -70,6 +92,6 @@ mod tests {
         assert_eq!(key.cert, empty_cert);
         assert_eq!(key.key_type, rsa::KeyType::RSA);
         assert_eq!(key.key_ops.len(), 0);
-        assert_eq!(key.use_case, "".into());
+        assert_eq!(key.use_case, UseCase::None);
     }
 }
